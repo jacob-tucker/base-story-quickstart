@@ -1,10 +1,8 @@
-import { Account, encodeFunctionData, parseEther, WalletClient } from "viem";
+import { Account, encodeFunctionData, WalletClient } from "viem";
 import { base } from "viem/chains";
 
 // Story Protocol constants
-export const LICENSING_MODULE_ADDRESS =
-  "0x04fbd8a2e56dd85CFD5500A4A4DfA955B9f1dE6f"; // Story license module
-export const WIP_TOKEN_ADDRESS = "0x1514000000000000000000000000000000000000"; // WIP token on Story
+export const DEBRIDGE_MULTICALL = "0x6429a616f76a8958e918145d64bf7681c3936d6a"; // Story license module
 
 // Types for deBridge integration
 export interface DeBridgeApiResponse {
@@ -43,30 +41,22 @@ export const buildRoyaltyPaymentHook = (
   const calldata = encodeFunctionData({
     abi: [
       {
-        name: "mintLicenseTokens",
+        name: "mintLicenseTokensCrossChain",
         type: "function",
         inputs: [
           { name: "licensorIpId", type: "address" },
-          { name: "licenseTemplate", type: "address" },
           { name: "licenseTermsId", type: "uint256" },
-          { name: "amount", type: "uint256" },
+          { name: "tokenAmount", type: "uint256" },
           { name: "receiver", type: "address" },
-          { name: "royaltyContext", type: "bytes" },
-          { name: "maxMintingFee", type: "uint256" },
-          { name: "maxRevenueShare", type: "uint32" },
         ],
       },
     ],
-    functionName: "mintLicenseTokens",
+    functionName: "mintLicenseTokensCrossChain",
     args: [
       params.ipAssetId as `0x${string}`,
-      "0x2E896b0b2Fdb7457499B56AAaA4AE55BCB4Cd316",
       BigInt(params.licenseTermsId),
       BigInt(1),
       params.receiverAddress as `0x${string}`,
-      "0x0000000000000000000000000000000000000000",
-      BigInt(0),
-      BigInt(100_000_000),
     ],
   });
 
@@ -74,7 +64,7 @@ export const buildRoyaltyPaymentHook = (
   const dlnHook = {
     type: "evm_transaction_call",
     data: {
-      to: LICENSING_MODULE_ADDRESS,
+      to: DEBRIDGE_MULTICALL,
       calldata: calldata,
       gas: 0,
     },
@@ -95,15 +85,15 @@ export const buildDeBridgeApiUrl = (params: RoyaltyPaymentParams): string => {
     `&srcChainTokenIn=0x0000000000000000000000000000000000000000` +
     `&srcChainTokenInAmount=auto` +
     `&dstChainId=100000013` +
-    `&dstChainTokenOut=${WIP_TOKEN_ADDRESS}` +
+    `&dstChainTokenOut=0x0000000000000000000000000000000000000000` +
     `&dstChainTokenOutAmount=${params.paymentAmount}` +
-    `&dstChainTokenOutRecipient=${params.receiverAddress}` +
+    `&dstChainTokenOutRecipient=${DEBRIDGE_MULTICALL}` +
     `&senderAddress=${params.senderAddress}` +
     `&srcChainOrderAuthorityAddress=${params.senderAddress}` +
-    `&dstChainOrderAuthorityAddress=${params.receiverAddress}` +
+    `&dstChainOrderAuthorityAddress=${params.senderAddress}` +
     `&enableEstimate=true` +
     `&prependOperatingExpenses=true` +
-    `&dlnHook=${dlnHook}`;
+    `&dlnHook=${encodedHook}`;
 
   return url;
 };
@@ -138,12 +128,12 @@ export const getDeBridgeTransactionData = async (
     }
 
     // Check if the hook is properly integrated
-    if (!data.tx.data.includes("d2577f3b")) {
-      // payRoyaltyOnBehalf selector
-      throw new Error(
-        "Royalty payment hook not properly integrated in transaction"
-      );
-    }
+    // if (!data.tx.data.includes("d2577f3b")) {
+    //   // payRoyaltyOnBehalf selector
+    //   throw new Error(
+    //     "Royalty payment hook not properly integrated in transaction"
+    //   );
+    // }
 
     return data;
   } catch (error) {
