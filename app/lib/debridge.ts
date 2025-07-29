@@ -6,13 +6,11 @@ import {
   encodeFunctionData,
   http,
   parseAbi,
-  PublicClient,
   WalletClient,
 } from "viem";
 import { base, story } from "viem/chains";
-import { mainnet } from "@story-protocol/core-sdk";
 
-// Story Protocol constants
+// Story constants
 export const DEBRIDGE_MULTICALL = "0x6429a616f76a8958e918145d64bf7681c3936d6a"; // Story license module
 
 // Types for deBridge integration
@@ -189,7 +187,7 @@ export const getLicenseTokenId = async (
   storyTxHash: Address
 ): Promise<bigint | null> => {
   const baseConfig = {
-    chain: mainnet,
+    chain: story,
     transport: http("https://mainnet.storyrpc.io"),
   } as const;
   const publicClient = createPublicClient(baseConfig);

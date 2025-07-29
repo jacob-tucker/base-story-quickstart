@@ -326,48 +326,6 @@ export default function LicensePurchase({
           </div>
         )}
       </div>
-
-      {/* How it Works */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">How It Works</h3>
-        <div className="space-y-3 text-sm">
-          <div className="flex items-start space-x-3">
-            <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-blue-600 font-bold text-xs">1</span>
-            </div>
-            <div>
-              <p className="font-medium text-gray-900">Connect Base Wallet</p>
-              <p className="text-gray-600">
-                Use your Base wallet to pay for the license
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-3">
-            <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-purple-600 font-bold text-xs">2</span>
-            </div>
-            <div>
-              <p className="font-medium text-gray-900">Cross-Chain Payment</p>
-              <p className="text-gray-600">
-                deBridge converts ETH to WIP tokens for Story
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-3">
-            <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-green-600 font-bold text-xs">3</span>
-            </div>
-            <div>
-              <p className="font-medium text-gray-900">License Granted</p>
-              <p className="text-gray-600">
-                Story mints you a license to use the music commercially
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

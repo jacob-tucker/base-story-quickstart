@@ -69,6 +69,62 @@ export default function MusicPlayer({
         <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
         <p className="text-sm text-gray-600 mb-4">{subtitle}</p>
 
+        {/* IP Asset Information */}
+        <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-lg">
+          <div className="flex items-start space-x-3 mb-3">
+            <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg
+                className="w-4 h-4 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h4 className="text-sm font-semibold text-gray-900 mb-1">
+                Verified IP Asset
+              </h4>
+              <p className="text-xs text-gray-600">
+                Registered and protected on Story
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3 text-xs">
+            <div className="flex items-center justify-between p-2 bg-white rounded border">
+              <span className="font-medium text-gray-700">Asset ID:</span>
+              <a
+                href="https://explorer.story.foundation/ipa/0xcb6B9CCae4108A103097B30cFc25e1E257D4b5Fe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-600 hover:text-purple-700 font-mono text-xs hover:underline"
+              >
+                0xcb6B...57D4b5Fe ↗
+              </a>
+            </div>
+
+            <div className="flex items-center justify-between p-2 bg-white rounded border">
+              <span className="font-medium text-gray-700">
+                Commercial License:
+              </span>
+              <span className="text-green-600 font-semibold">0.00001 $WIP</span>
+            </div>
+
+            <div className="flex items-center justify-between p-2 bg-white rounded border">
+              <span className="font-medium text-gray-700">License Terms:</span>
+              <a
+                href="https://github.com/piplabs/pil-document/blob/main/Story%20Foundation%20-%20Programmable%20IP%20License%20(1.31.25).pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-600 hover:text-purple-700 font-medium hover:underline"
+              >
+                PIL License ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
         <audio
           ref={audioRef}
           src={audioSrc}
