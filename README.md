@@ -1,4 +1,4 @@
-# Cross-Chain Music Licensing Demo
+# Cross-Chain Commercial Licensing Demo
 
 A Next.js application demonstrating cross-chain music licensing using Base and Story. Users can purchase commercial music licenses by paying with ETH on Base, which gets automatically bridged to Story to mint the commercial license that gives the user the right to commercialize the music.
 

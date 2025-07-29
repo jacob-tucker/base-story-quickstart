@@ -87,11 +87,11 @@ export default function App() {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold gradient-text mb-4">
-            Cross-Chain Music Licensing
+            Cross-Chain Commercial Licensing
           </h1>
           <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
-            Purchase commercial music licenses using Base → Story cross-chain
-            payments
+            Purchase commercial licenses, enforced via Story&apos;s legal
+            license, cross-chain using ETH on Base.
           </p>
         </div>
 
