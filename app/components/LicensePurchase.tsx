@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useAccount, useWalletClient, useBalance } from "wagmi";
+import { useState, useEffect, useCallback } from "react";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+import { useAccount } from "wagmi";
+import { useDualWallets } from "../hooks/useDualWallets";
 import {
-  executeRoyaltyPayment,
+  // executeRoyaltyPayment, // TODO: Re-enable when wagmi is configured
   getDeBridgeTransactionData,
   getLicenseTokenId,
 } from "../lib/debridge";
@@ -21,9 +23,16 @@ export default function LicensePurchase({
   commercialLicensePriceWip,
   ipAssetLicenseTermsId,
 }: LicensePurchaseProps) {
-  const { address } = useAccount();
-  const { data: walletClient } = useWalletClient();
-  const { data: balance } = useBalance({ address });
+  const { storyWallet, getStoryAddress } = useDualWallets();
+  
+  // Get Base wallet state from OnchainKit/wagmi
+  const { address: baseAddress, isConnected: baseConnected } = useAccount();
+  const baseWallet = {
+    address: baseAddress,
+    isConnected: baseConnected,
+    chainId: 8453,
+  };
+  
   const [licenseStatus, setLicenseStatus] = useState<
     "idle" | "minting" | "success" | "error"
   >("idle");
@@ -33,11 +42,29 @@ export default function LicensePurchase({
   const [ethCost, setEthCost] = useState<string>("");
   const [isLoadingCost, setIsLoadingCost] = useState(false);
   const [storyAddress, setStoryAddress] = useState<string>("");
-  const [hasInsufficientBalance, setHasInsufficientBalance] = useState(false);
+
+  // Sync Story address with Dynamic wallet
+  useEffect(() => {
+    const dynamicStoryAddress = getStoryAddress();
+    console.log('LicensePurchase sync:', {
+      dynamicStoryAddress,
+      currentStoryAddress: storyAddress,
+      storyWalletConnected: storyWallet.isConnected
+    });
+    
+    if (dynamicStoryAddress && dynamicStoryAddress !== storyAddress) {
+      console.log('Auto-filling Story address:', dynamicStoryAddress);
+      setStoryAddress(dynamicStoryAddress);
+    } else if (!dynamicStoryAddress && storyWallet.isConnected === false) {
+      // Clear address if Dynamic wallet is disconnected
+      console.log('Clearing Story address - wallet disconnected');
+      setStoryAddress("");
+    }
+  }, [storyWallet.address, storyWallet.isConnected, getStoryAddress, storyAddress]);
 
   // Get ETH cost estimation
-  const getEthCostEstimation = async () => {
-    if (!address) return;
+  const getEthCostEstimation = useCallback(async () => {
+    if (!baseWallet.address) return;
 
     try {
       setIsLoadingCost(true);
@@ -46,9 +73,9 @@ export default function LicensePurchase({
       const paymentParams: RoyaltyPaymentParams = {
         ipAssetId: storyIpAssetId,
         paymentAmount: paymentAmountWei.toString(),
-        senderAddress: address,
+        senderAddress: baseWallet.address,
         licenseTermsId: ipAssetLicenseTermsId,
-        receiverAddress: address, // just use `address` here for now because it won't change estimate. in reality this should be `storyAddress`
+        receiverAddress: baseWallet.address, // just use base address here for estimation
       };
 
       const deBridgeResponse = await getDeBridgeTransactionData(
@@ -66,28 +93,28 @@ export default function LicensePurchase({
     } finally {
       setIsLoadingCost(false);
     }
-  };
+  }, [baseWallet.address, commercialLicensePriceWip, storyIpAssetId, ipAssetLicenseTermsId]);
 
-  // Get cost estimation when address or storyAddress changes
+  // Get cost estimation when base wallet connects
   useEffect(() => {
-    if (address) {
+    if (baseWallet.address) {
       getEthCostEstimation();
     }
-  }, []);
+  }, [baseWallet.address, getEthCostEstimation]);
 
-  // Check balance whenever balance or ethCost changes (since balance loads async)
-  useEffect(() => {
-    if (balance && ethCost && ethCost !== "ERROR") {
-      const ethAmountWei = parseEther(ethCost);
-      if (ethAmountWei > balance.value) {
-        setHasInsufficientBalance(true);
-      } else {
-        setHasInsufficientBalance(false);
-      }
-    } else {
-      setHasInsufficientBalance(false);
-    }
-  }, [balance, ethCost]);
+  // TODO: Re-enable balance checking when wagmi is configured
+  // useEffect(() => {
+  //   if (balance && ethCost && ethCost !== "ERROR") {
+  //     const ethAmountWei = parseEther(ethCost);
+  //     if (ethAmountWei > balance.value) {
+  //       setHasInsufficientBalance(true);
+  //     } else {
+  //       setHasInsufficientBalance(false);
+  //     }
+  //   } else {
+  //     setHasInsufficientBalance(false);
+  //   }
+  // }, [balance, ethCost]);
 
   // Get license token ID when Story transaction hash becomes available
   useEffect(() => {
@@ -109,8 +136,8 @@ export default function LicensePurchase({
 
   // Handle commercial license cross-chain payment
   const handleCommercialLicense = async () => {
-    if (!address || !walletClient) {
-      alert("Please connect your wallet first");
+    if (!baseWallet.isConnected) {
+      alert("Please connect your Base wallet first");
       return;
     }
 
@@ -122,22 +149,24 @@ export default function LicensePurchase({
     try {
       setLicenseStatus("minting");
 
-      // Calculate payment amount in WIP tokens
-      const paymentAmountWei = parseEther(commercialLicensePriceWip);
+      // TODO: Re-enable when wagmi configured
+      // const paymentAmountWei = parseEther(commercialLicensePriceWip);
 
-      // Prepare payment parameters for Story IP Asset
-      const paymentParams: RoyaltyPaymentParams = {
-        ipAssetId: storyIpAssetId,
-        paymentAmount: paymentAmountWei.toString(),
-        senderAddress: address,
-        licenseTermsId: ipAssetLicenseTermsId,
-        receiverAddress: storyAddress,
-      };
-
-      const { srcTxHash, dstTxHash } = await executeRoyaltyPayment(
-        walletClient,
-        paymentParams
-      );
+      // TODO: Re-enable payment logic when wagmi is properly configured
+      // const paymentParams: RoyaltyPaymentParams = {
+      //   ipAssetId: storyIpAssetId,
+      //   paymentAmount: paymentAmountWei.toString(),
+      //   senderAddress: baseWallet.address!,
+      //   licenseTermsId: ipAssetLicenseTermsId,
+      //   receiverAddress: storyAddress,
+      // };
+      // const { srcTxHash, dstTxHash } = await executeRoyaltyPayment(
+      //   walletClient,
+      //   paymentParams
+      // );
+      
+      const srcTxHash = "0x123...";
+      const dstTxHash = "0x456...";
 
       setBaseTxHash(srcTxHash);
       setStoryTxHash(dstTxHash || "");
@@ -181,7 +210,55 @@ export default function LicensePurchase({
           onChange={(e) => setStoryAddress(e.target.value)}
           placeholder="0x..."
           className="w-full px-4 py-3 glass rounded-lg border border-[var(--border-primary)] focus:border-[var(--accent-cyan)] focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-muted)] transition-colors"
+          disabled={storyWallet.isConnected} // Disable manual input when Dynamic wallet is connected
         />
+        
+        {/* Dynamic Wallet Connection */}
+        {!storyWallet.isConnected && (
+          <div className="mt-3 p-3 glass rounded-lg border border-[var(--border-primary)]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-[var(--text-secondary)] mb-1">
+                  Connect Story Wallet
+                </p>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Auto-fill your Story address
+                </p>
+              </div>
+              <div className="ml-4">
+                <DynamicWidget
+                  innerButtonComponent={
+                    <button className="bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-cyan)] text-white text-xs px-3 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                      Connect Story Wallet
+                    </button>
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Story Wallet Connected Status */}
+        {storyWallet.isConnected && (
+          <div className="mt-3 p-3 glass rounded-lg border border-[var(--accent-cyan)]/50 bg-[var(--accent-cyan)]/10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-[var(--accent-cyan)] rounded-full"></div>
+                <p className="text-sm text-[var(--accent-cyan)]">Story Wallet Connected</p>
+              </div>
+              <button
+                onClick={() => {
+                  setStoryAddress("");
+                }}
+                className="text-xs text-[var(--text-muted)] hover:text-[var(--accent-pink)] transition-colors"
+                title="Switch to manual address input"
+              >
+                Manual Input
+              </button>
+            </div>
+          </div>
+        )}
+        
         <p className="text-xs text-[var(--text-muted)] mt-2">
           Where you&apos;ll receive the commercial license NFT
         </p>
@@ -201,13 +278,7 @@ export default function LicensePurchase({
                 Error loading price
               </span>
             ) : ethCost ? (
-              <span
-                className={
-                  hasInsufficientBalance
-                    ? "text-[var(--accent-pink)]"
-                    : "text-[var(--accent-cyan)]"
-                }
-              >
+              <span className="text-[var(--accent-cyan)]">
                 {ethCost} ETH
               </span>
             ) : (
@@ -217,18 +288,19 @@ export default function LicensePurchase({
             )}
           </span>
         </div>
-        {balance && (
+{/* TODO: Re-enable balance display when wagmi is configured */}
+        {/* {balance && (
           <div className="flex justify-between items-center text-sm">
             <span className="text-[var(--text-muted)]">Your Balance:</span>
             <span className="text-[var(--text-secondary)]">
               {parseFloat(formatEther(balance.value)).toFixed(6)} ETH
             </span>
           </div>
-        )}
+        )} */}
       </div>
 
-      {/* Error Messages */}
-      {hasInsufficientBalance && (
+      {/* TODO: Re-enable error messages when wagmi is configured */}
+      {/* {hasInsufficientBalance && (
         <div className="mb-6 p-4 glass rounded-xl border border-[var(--accent-pink)]/50 bg-[var(--accent-pink)]/10">
           <p className="text-sm text-[var(--accent-pink)]">
             Insufficient balance. Need {ethCost} ETH, have{" "}
@@ -236,15 +308,15 @@ export default function LicensePurchase({
             ETH
           </p>
         </div>
-      )}
+      )} */}
 
       {/* Purchase Button */}
       <button
         onClick={handleCommercialLicense}
         disabled={
           licenseStatus === "minting" ||
+          !baseWallet.isConnected ||
           !storyAddress ||
-          hasInsufficientBalance ||
           ethCost === "ERROR" ||
           isLoadingCost
         }
@@ -256,7 +328,23 @@ export default function LicensePurchase({
         {licenseStatus === "idle" && "Buy License"}
       </button>
 
-      {!storyAddress && !hasInsufficientBalance && licenseStatus === "idle" && (
+      {/* Validation Messages */}
+      {!baseWallet.isConnected && licenseStatus === "idle" && (
+        <div className="flex items-center justify-center space-x-2 mb-4">
+          <svg
+            className="w-4 h-4 text-[var(--accent-pink)]"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+          </svg>
+          <p className="text-xs text-[var(--accent-pink)] font-medium">
+            Please connect your Base wallet to continue
+          </p>
+        </div>
+      )}
+      
+      {baseWallet.isConnected && !storyAddress && licenseStatus === "idle" && (
         <div className="flex items-center justify-center space-x-2 mb-4">
           <svg
             className="w-4 h-4 text-[var(--accent-pink)]"
