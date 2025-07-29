@@ -18,231 +18,241 @@ import {
 import MusicPlayer from "./components/MusicPlayer";
 import LicensePurchase from "./components/LicensePurchase";
 
-// Story IP Asset to receive commercial license payments
 const STORY_IP_ASSET_ID = "0xcb6B9CCae4108A103097B30cFc25e1E257D4b5Fe";
 const COMMERCIAL_LICENSE_PRICE_WIP = "0.00001";
 const IP_ASSET_LICENSE_TERMS_ID = "27910";
-// const STORY_RECEIVER_ADDRESS = "0x089d75C9b7E441dA3115AF93FF9A855BDdbfe384";
 
 export default function App() {
   const { isConnected } = useAccount();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex justify-between items-center max-w-6xl mx-auto">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
-                <span className="text-white font-bold text-xs">B</span>
+    <div className="min-h-screen">
+      {/* Cyberpunk Header */}
+      <header className="glass border-b border-[var(--border-primary)] px-6 py-3">
+        <div className="flex justify-between items-center max-w-5xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center">
+                <span className="text-white font-bold text-sm">B</span>
               </div>
-              <span className="font-semibold text-gray-900">Base</span>
+              <span className="font-semibold gradient-text">BASE</span>
             </div>
-            <span className="text-gray-400">×</span>
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 bg-purple-600 rounded flex items-center justify-center">
-                <span className="text-white font-bold text-xs">S</span>
+            <div className="w-1 h-1 bg-[var(--accent-cyan)] rounded-full animate-pulse"></div>
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-purple)] to-[var(--accent-pink)] flex items-center justify-center">
+                <span className="text-white font-bold text-sm">S</span>
               </div>
-              <span className="font-semibold text-gray-900">Story</span>
+              <span className="font-semibold gradient-text">STORY</span>
             </div>
           </div>
 
           <Wallet>
-            <ConnectWallet>
-              <Avatar className="h-6 w-6" />
-              <Name />
+            <ConnectWallet className="bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-cyan)] hover:from-[var(--accent-cyan)] hover:to-[var(--accent-purple)] btn-glow rounded-lg px-4 py-2 text-sm font-medium">
+              <Avatar className="h-5 w-5" />
+              <Name className="text-white" />
             </ConnectWallet>
-            <WalletDropdown>
+            <WalletDropdown className="glass border border-[var(--border-primary)]">
               <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
                 <Avatar />
-                <Name />
-                <Address />
-                <EthBalance />
+                <Name className="text-[var(--text-primary)]" />
+                <Address className="text-[var(--text-secondary)]" />
+                <EthBalance className="text-[var(--text-secondary)]" />
               </Identity>
               <WalletDropdownLink
                 icon="wallet"
                 href="https://keys.coinbase.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-[var(--text-secondary)] hover:text-[var(--accent-cyan)]"
               >
                 Wallet
               </WalletDropdownLink>
-              <WalletDropdownDisconnect />
+              <WalletDropdownDisconnect className="text-[var(--text-secondary)] hover:text-[var(--accent-pink)]" />
             </WalletDropdown>
           </Wallet>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-4">
-        {/* Title */}
-        <div className="text-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">
-            Music License Demo
+      <main className="max-w-5xl mx-auto px-6 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold gradient-text mb-4">
+            Cross-Chain Music Licensing
           </h1>
-          <p className="text-gray-600 text-sm">
-            Purchase commercial licenses using cross-chain payments
+          <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
+            Purchase commercial music licenses using Base → Story cross-chain
+            payments
           </p>
         </div>
 
         {/* Mainnet Warning */}
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-          <div className="flex items-start space-x-3">
-            <div className="text-amber-600 mt-0.5">⚠️</div>
+        <div className="glass rounded-2xl p-6 mb-8 border border-[var(--accent-pink)]/50 bg-[var(--accent-pink)]/10">
+          <div className="flex items-start space-x-4">
+            <div className="text-2xl">⚠️</div>
             <div>
-              <h3 className="text-sm font-semibold text-amber-800 mb-1">
-                Mainnet Only
+              <h3 className="text-lg font-semibold text-[var(--accent-pink)] mb-2">
+                Mainnet Warning
               </h3>
-              <p className="text-xs text-amber-700">
-                This demo runs on mainnet because deBridge cross-chain
-                functionality is not available on testnets. If you wish to try
-                this out live, only use wallets you don't care about.
+              <p className="text-[var(--text-secondary)]">
+                This demo uses real mainnet transactions because deBridge does
+                not work on testnet. If you try the demo, only use wallets you
+                don't care about.
               </p>
             </div>
           </div>
         </div>
 
         {!isConnected ? (
-          <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
-            <h3 className="text-base font-semibold text-gray-900 mb-1">
-              Connect Wallet to Continue
+          <div className="glass rounded-2xl p-8 text-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-[var(--accent-purple)] to-[var(--accent-cyan)] rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M21 18v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v13z" />
+                <path d="M16 8l-5.5 3L16 14v-6z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
+              Connect Your Wallet
             </h3>
-            <p className="text-gray-600 text-sm">
-              Connect your wallet to purchase commercial music licenses
+            <p className="text-[var(--text-secondary)]">
+              Start purchasing commercial music licenses
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {/* Top Row: How It Works + Example */}
-            <div className="grid lg:grid-cols-2 gap-4">
+          <div className="space-y-8">
+            {/* How It Works & Example Success - Show when connected */}
+            <div className="grid lg:grid-cols-2 gap-6">
               {/* How It Works */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <h3 className="text-base font-semibold text-gray-900 mb-3">
-                  🎓 How It Works
-                </h3>
-                <div className="space-y-2 text-xs">
-                  <div className="flex items-start space-x-2">
-                    <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-blue-600 font-bold text-xs">1</span>
+              <div className="glass rounded-2xl p-6 glow-border">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">?</span>
+                  </div>
+                  <h3 className="text-lg font-semibold gradient-text">
+                    How It Works
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-6 h-6 bg-[var(--accent-cyan)]/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-[var(--accent-cyan)] font-bold text-xs">
+                        1
+                      </span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="text-sm font-medium text-[var(--text-primary)]">
                         Connect Base Wallet
                       </p>
-                      <p className="text-gray-600">
-                        Use your Base wallet to pay for the license
+                      <p className="text-xs text-[var(--text-muted)]">
+                        Pay with ETH on Base
                       </p>
                     </div>
                   </div>
-
-                  <div className="flex items-start space-x-2">
-                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-purple-600 font-bold text-xs">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-6 h-6 bg-[var(--accent-purple)]/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-[var(--accent-purple)] font-bold text-xs">
                         2
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">
-                        Cross-Chain Payment
+                      <p className="text-sm font-medium text-[var(--text-primary)]">
+                        Cross-Chain Bridge
                       </p>
-                      <p className="text-gray-600">
-                        deBridge converts ETH to WIP tokens for Story
+                      <p className="text-xs text-[var(--text-muted)]">
+                        deBridge converts ETH → WIP
                       </p>
                     </div>
                   </div>
-
-                  <div className="flex items-start space-x-2">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-green-600 font-bold text-xs">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-6 h-6 bg-[var(--accent-pink)]/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-[var(--accent-pink)] font-bold text-xs">
                         3
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">
-                        License Granted
+                      <p className="text-sm font-medium text-[var(--text-primary)]">
+                        License Minted
                       </p>
-                      <p className="text-gray-600">
-                        Story mints you a license to use the music commercially
+                      <p className="text-xs text-[var(--text-muted)]">
+                        Receive NFT on Story
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Example Response Section */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <h3 className="text-base font-semibold text-gray-900 mb-2">
-                  📋 Example Success
-                </h3>
-                <p className="text-gray-600 text-xs mb-3">
-                  What you'll see after purchasing:
-                </p>
-
-                <div className="bg-green-50 border border-green-200 rounded p-3">
-                  <p className="text-xs text-green-800 mb-2">
-                    ✅ License purchased successfully!
-                  </p>
-                  <div className="space-y-1.5">
-                    <div>
-                      <p className="text-xs text-green-700 font-medium">
+              {/* Example Success */}
+              <div className="glass rounded-2xl p-6 glow-border">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">✓</span>
+                  </div>
+                  <h3 className="text-lg font-semibold gradient-text">
+                    Example Success
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-[var(--text-secondary)]">
                         Base Payment:
-                      </p>
+                      </span>
                       <a
                         href="https://basescan.org/tx/0x8532e90ee671268f578202850a1709a8d512f71b1a81bf3eb4929d6a627eb76a"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-green-600 hover:underline block"
+                        className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
                       >
-                        0x8532e90ee6...627eb76a →
+                        0x8532e90ee6...627eb76a ↗
                       </a>
                     </div>
-                    <div>
-                      <p className="text-xs text-green-700 font-medium">
+                  </div>
+                  <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-[var(--text-secondary)]">
                         Story License:
-                      </p>
+                      </span>
                       <a
                         href="https://www.storyscan.io/tx/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-green-600 hover:underline block"
+                        className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
                       >
-                        0x5a41060e17...bd0ba61b270fda →
+                        0x5a41060e17...b270fda ↗
                       </a>
                     </div>
-                    <div>
-                      <p className="text-xs text-green-700 font-medium">
-                        License Token ID:
-                      </p>
+                  </div>
+                  <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-[var(--text-secondary)]">
+                        License Token:
+                      </span>
                       <a
                         href="https://explorer.story.foundation/transactions/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-green-600 hover:underline block"
+                        className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
                       >
-                        #36896 →
+                        #36896 ↗
                       </a>
                     </div>
                   </div>
                 </div>
-
-                <p className="text-xs text-gray-500 mt-2">
-                  💡 Base → Story → Token ID
-                </p>
               </div>
             </div>
 
-            {/* Bottom Row: Music Player + License Purchase */}
-            <div className="grid lg:grid-cols-2 gap-4">
-              {/* Music Player */}
+            {/* Main Interface */}
+            <div className="grid lg:grid-cols-2 gap-8">
               <MusicPlayer
                 coverImage="/assets/music-cover.jpeg"
                 audioSrc="/assets/music-track.mp3"
-                title="Licensed Music Track"
+                title="Midnight Marriage"
                 subtitle="Protected by Story"
               />
-
-              {/* License Purchase */}
               <LicensePurchase
                 storyIpAssetId={STORY_IP_ASSET_ID}
                 commercialLicensePriceWip={COMMERCIAL_LICENSE_PRICE_WIP}

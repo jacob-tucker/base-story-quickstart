@@ -155,177 +155,172 @@ export default function LicensePurchase({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">
-          Purchase Commercial License
-        </h3>
-
-        {/* Story Address Input */}
-        <div className="mb-4">
-          <label
-            htmlFor="storyAddress"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Your Story Address (to receive license)
-          </label>
-          <input
-            type="text"
-            id="storyAddress"
-            value={storyAddress}
-            onChange={(e) => setStoryAddress(e.target.value)}
-            placeholder="0x..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Enter your Story address where you want to receive the commercial
-            license
-          </p>
+    <div className="glass rounded-2xl p-6 glow-border">
+      <div className="flex items-center space-x-3 mb-6">
+        <div className="w-10 h-10 bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] rounded-lg flex items-center justify-center">
+          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
         </div>
+        <div>
+          <h3 className="text-xl font-semibold text-[var(--text-primary)]">
+            License Purchase
+          </h3>
+          <p className="text-[var(--text-secondary)]">Cross-chain payment via deBridge</p>
+        </div>
+      </div>
 
-        {/* Cost Estimation Display */}
-        <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">Estimated Cost:</span>
-            <span className="font-medium">
-              {isLoadingCost ? (
-                <span className="animate-pulse text-gray-500">Loading...</span>
-              ) : ethCost === "ERROR" ? (
-                <span className="text-red-600">Error loading price</span>
-              ) : ethCost ? (
-                <span
-                  className={
-                    hasInsufficientBalance ? "text-red-600" : "text-gray-900"
-                  }
-                >
-                  {ethCost} ETH
-                </span>
-              ) : (
-                <span className="text-gray-500">
-                  {commercialLicensePriceWip} WIP
-                </span>
-              )}
-            </span>
-          </div>
-          {balance && (
-            <div className="flex justify-between items-center text-xs text-gray-500 mt-1">
-              <span>Your Balance:</span>
-              <span>
-                {parseFloat(formatEther(balance.value)).toFixed(6)} ETH
+      {/* Story Address Input */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-[var(--text-secondary)] mb-3">
+          Story Address (recipient)
+        </label>
+        <input
+          type="text"
+          value={storyAddress}
+          onChange={(e) => setStoryAddress(e.target.value)}
+          placeholder="0x..."
+          className="w-full px-4 py-3 glass rounded-lg border border-[var(--border-primary)] focus:border-[var(--accent-cyan)] focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-muted)] transition-colors"
+        />
+        <p className="text-xs text-[var(--text-muted)] mt-2">
+          Where you'll receive the commercial license NFT
+        </p>
+      </div>
+
+      {/* Cost Display */}
+      <div className="mb-6 p-4 glass rounded-xl border border-[var(--border-primary)]">
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-[var(--text-secondary)]">Estimated Cost:</span>
+          <span className="font-semibold">
+            {isLoadingCost ? (
+              <span className="animate-pulse text-[var(--accent-cyan)]">Loading...</span>
+            ) : ethCost === "ERROR" ? (
+              <span className="text-[var(--accent-pink)]">Error loading price</span>
+            ) : ethCost ? (
+              <span className={hasInsufficientBalance ? "text-[var(--accent-pink)]" : "text-[var(--accent-cyan)]"}>
+                {ethCost} ETH
               </span>
-            </div>
-          )}
+            ) : (
+              <span className="text-[var(--text-muted)]">{commercialLicensePriceWip} WIP</span>
+            )}
+          </span>
         </div>
-
-        {/* Error Messages - Show only one error at a time, balance takes precedence */}
-        {hasInsufficientBalance ? (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-800">
-              ❌ Insufficient balance. You need {ethCost} ETH but only have{" "}
-              {balance
-                ? parseFloat(formatEther(balance.value)).toFixed(6)
-                : "0"}{" "}
-              ETH.
-            </p>
-          </div>
-        ) : !storyAddress ? (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-800">
-              ❌ Please enter your Story address to receive the license.
-            </p>
-          </div>
-        ) : null}
-
-        <button
-          onClick={handleCommercialLicense}
-          disabled={
-            licenseStatus === "minting" ||
-            !storyAddress ||
-            hasInsufficientBalance ||
-            ethCost === "ERROR" ||
-            isLoadingCost
-          }
-          className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg mb-4"
-        >
-          {licenseStatus === "minting" && "Processing Payment..."}
-          {licenseStatus === "success" && "✅ License Purchased!"}
-          {licenseStatus === "error" && "❌ Try Again"}
-          {licenseStatus === "idle" && "Buy License"}
-        </button>
-
-        {/* Status */}
-        {licenseStatus === "minting" && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
-            <p className="text-sm text-yellow-800">
-              Processing cross-chain payment to Story...
-            </p>
-          </div>
-        )}
-
-        {licenseStatus === "success" && (
-          <div className="bg-green-50 border border-green-200 rounded p-3">
-            <p className="text-sm text-green-800 mb-3">
-              License purchased successfully! You can now use this music
-              commercially.
-            </p>
-            <div className="space-y-2">
-              {baseTxHash && (
-                <div>
-                  <p className="text-xs text-green-700 font-medium">
-                    Base Payment:
-                  </p>
-                  <a
-                    href={`https://basescan.org/tx/${baseTxHash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-green-600 hover:underline block"
-                  >
-                    {baseTxHash.slice(0, 10)}...{baseTxHash.slice(-8)} →
-                  </a>
-                </div>
-              )}
-              {storyTxHash && (
-                <div>
-                  <p className="text-xs text-green-700 font-medium">
-                    Story License:
-                  </p>
-                  <a
-                    href={`https://www.storyscan.io/tx/${storyTxHash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-green-600 hover:underline block"
-                  >
-                    {storyTxHash.slice(0, 10)}...{storyTxHash.slice(-8)} →
-                  </a>
-                </div>
-              )}
-              {licenseTokenId && (
-                <div>
-                  <p className="text-xs text-green-700 font-medium">
-                    License Token ID:
-                  </p>
-                  <a
-                    href={`https://explorer.story.foundation/transactions/${storyTxHash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-green-600 hover:underline block"
-                  >
-                    #{licenseTokenId}
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {licenseStatus === "error" && (
-          <div className="bg-red-50 border border-red-200 rounded p-3">
-            <p className="text-sm text-red-800">
-              Payment failed. Please try again.
-            </p>
+        {balance && (
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-[var(--text-muted)]">Your Balance:</span>
+            <span className="text-[var(--text-secondary)]">
+              {parseFloat(formatEther(balance.value)).toFixed(6)} ETH
+            </span>
           </div>
         )}
       </div>
+
+      {/* Error Messages */}
+      {hasInsufficientBalance && (
+        <div className="mb-6 p-4 glass rounded-xl border border-[var(--accent-pink)]/50 bg-[var(--accent-pink)]/10">
+          <p className="text-sm text-[var(--accent-pink)]">
+Insufficient balance. Need {ethCost} ETH, have {balance ? parseFloat(formatEther(balance.value)).toFixed(6) : "0"} ETH
+          </p>
+        </div>
+      )}
+
+      {/* Purchase Button */}
+      <button
+        onClick={handleCommercialLicense}
+        disabled={
+          licenseStatus === "minting" ||
+          !storyAddress ||
+          hasInsufficientBalance ||
+          ethCost === "ERROR" ||
+          isLoadingCost
+        }
+        className="w-full bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-cyan)] hover:from-[var(--accent-cyan)] hover:to-[var(--accent-purple)] disabled:from-gray-600 disabled:to-gray-600 text-white font-semibold py-4 px-6 rounded-xl btn-glow disabled:opacity-50 disabled:cursor-not-allowed transition-all mb-2"
+      >
+        {licenseStatus === "minting" && "Processing Payment..."}
+        {licenseStatus === "success" && "License Purchased!"}
+        {licenseStatus === "error" && "Try Again"}
+        {licenseStatus === "idle" && "Buy License"}
+      </button>
+      
+      {!storyAddress && !hasInsufficientBalance && licenseStatus === "idle" && (
+        <div className="flex items-center justify-center space-x-2 mb-4">
+          <svg className="w-4 h-4 text-[var(--accent-pink)]" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+          </svg>
+          <p className="text-xs text-[var(--accent-pink)] font-medium">
+            Please enter your Story address to continue
+          </p>
+        </div>
+      )}
+
+      {/* Status Messages */}
+      {licenseStatus === "minting" && (
+        <div className="p-4 glass rounded-xl border border-[var(--accent-cyan)]/50 bg-[var(--accent-cyan)]/10">
+          <div className="flex items-center space-x-3">
+            <div className="w-5 h-5 border-2 border-[var(--accent-cyan)] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-[var(--accent-cyan)]">
+              Processing cross-chain payment...
+            </p>
+          </div>
+        </div>
+      )}
+
+      {licenseStatus === "success" && (
+        <div className="p-4 glass rounded-xl border border-[var(--accent-cyan)]/50 bg-[var(--accent-cyan)]/10">
+          <p className="text-sm text-[var(--accent-cyan)] mb-4 font-medium">
+License purchased successfully! You can now use this music commercially.
+          </p>
+          <div className="space-y-3">
+            {baseTxHash && (
+              <div className="flex justify-between items-center p-3 glass rounded-lg">
+                <span className="text-xs text-[var(--text-secondary)]">Base Payment:</span>
+                <a
+                  href={`https://basescan.org/tx/${baseTxHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
+                >
+                  {baseTxHash.slice(0, 8)}...{baseTxHash.slice(-6)} ↗
+                </a>
+              </div>
+            )}
+            {storyTxHash && (
+              <div className="flex justify-between items-center p-3 glass rounded-lg">
+                <span className="text-xs text-[var(--text-secondary)]">Story License:</span>
+                <a
+                  href={`https://www.storyscan.io/tx/${storyTxHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
+                >
+                  {storyTxHash.slice(0, 8)}...{storyTxHash.slice(-6)} ↗
+                </a>
+              </div>
+            )}
+            {licenseTokenId && (
+              <div className="flex justify-between items-center p-3 glass rounded-lg">
+                <span className="text-xs text-[var(--text-secondary)]">License Token:</span>
+                <a
+                  href={`https://explorer.story.foundation/transactions/${storyTxHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
+                >
+                  #{licenseTokenId} ↗
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {licenseStatus === "error" && (
+        <div className="p-4 glass rounded-xl border border-[var(--accent-pink)]/50 bg-[var(--accent-pink)]/10">
+          <p className="text-sm text-[var(--accent-pink)]">
+Payment failed. Please try again.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
