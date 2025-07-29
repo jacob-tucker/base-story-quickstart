@@ -6,14 +6,12 @@ interface MusicPlayerProps {
   coverImage: string;
   audioSrc: string;
   title: string;
-  subtitle: string;
 }
 
 export default function MusicPlayer({
   coverImage,
   audioSrc,
   title,
-  subtitle,
 }: MusicPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -148,7 +146,9 @@ export default function MusicPlayer({
         {/* Asset ID */}
         <div className="mb-4 p-3 glass rounded-lg border border-[var(--border-primary)]">
           <div className="flex items-center justify-between">
-            <span className="text-[var(--text-secondary)] text-sm">Asset ID:</span>
+            <span className="text-[var(--text-secondary)] text-sm">
+              Asset ID:
+            </span>
             <a
               href="https://explorer.story.foundation/ipa/0xcb6B9CCae4108A103097B30cFc25e1E257D4b5Fe"
               target="_blank"
@@ -179,9 +179,7 @@ export default function MusicPlayer({
               <span className="text-[var(--accent-cyan)] font-mono">0%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[var(--text-muted)]">
-                Commercial Use:
-              </span>
+              <span className="text-[var(--text-muted)]">Commercial Use:</span>
               <span className="text-[var(--accent-cyan)] font-mono">
                 ✓ true
               </span>
@@ -214,9 +212,7 @@ export default function MusicPlayer({
             </div>
             <div className="flex justify-between">
               <span className="text-[var(--text-muted)]">Expiration:</span>
-              <span className="text-[var(--accent-cyan)] font-mono">
-                Never
-              </span>
+              <span className="text-[var(--accent-cyan)] font-mono">Never</span>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t border-[var(--border-primary)]">

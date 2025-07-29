@@ -15,6 +15,7 @@ import {
   Identity,
   EthBalance,
 } from "@coinbase/onchainkit/identity";
+import Image from "next/image";
 import MusicPlayer from "./components/MusicPlayer";
 import LicensePurchase from "./components/LicensePurchase";
 import HowItWorks from "./components/HowItWorks";
@@ -43,10 +44,12 @@ export default function App() {
             </div>
             <div className="w-1 h-1 bg-[var(--accent-cyan)] rounded-full animate-pulse"></div>
             <div className="flex items-center space-x-3">
-              <img
+              <Image
                 src="/assets/story-logo.jpg"
                 alt="Story Protocol"
-                className="w-8 h-8 rounded-lg object-cover"
+                width={32}
+                height={32}
+                className="rounded-lg object-cover"
               />
               <span className="font-semibold gradient-text">STORY</span>
             </div>
@@ -142,7 +145,6 @@ export default function App() {
                 coverImage="/assets/music-cover.jpeg"
                 audioSrc="/assets/music-track.mp3"
                 title="Midnight Marriage"
-                subtitle="Protected by Story"
               />
               <LicensePurchase
                 storyIpAssetId={STORY_IP_ASSET_ID}

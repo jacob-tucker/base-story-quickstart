@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  useAccount,
-  useWalletClient,
-  useBalance,
-  usePublicClient,
-} from "wagmi";
+import { useAccount, useWalletClient, useBalance } from "wagmi";
 import {
   executeRoyaltyPayment,
   getDeBridgeTransactionData,
@@ -28,7 +23,6 @@ export default function LicensePurchase({
 }: LicensePurchaseProps) {
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
-  const publicClient = usePublicClient();
   const { data: balance } = useBalance({ address });
   const [licenseStatus, setLicenseStatus] = useState<
     "idle" | "minting" | "success" | "error"
