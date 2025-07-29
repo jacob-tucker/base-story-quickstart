@@ -17,6 +17,7 @@ import {
 } from "@coinbase/onchainkit/identity";
 import MusicPlayer from "./components/MusicPlayer";
 import LicensePurchase from "./components/LicensePurchase";
+import BaseImage from "./svg/BaseImage";
 
 const STORY_IP_ASSET_ID = "0xcb6B9CCae4108A103097B30cFc25e1E257D4b5Fe";
 const COMMERCIAL_LICENSE_PRICE_WIP = "0.00001";
@@ -32,16 +33,18 @@ export default function App() {
         <div className="flex justify-between items-center max-w-5xl mx-auto">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center">
-                <span className="text-white font-bold text-sm">B</span>
+              <div className="w-8 h-8">
+                <BaseImage />
               </div>
               <span className="font-semibold gradient-text">BASE</span>
             </div>
             <div className="w-1 h-1 bg-[var(--accent-cyan)] rounded-full animate-pulse"></div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-purple)] to-[var(--accent-pink)] flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
-              </div>
+              <img
+                src="/assets/story-logo.jpg"
+                alt="Story Protocol"
+                className="w-8 h-8 rounded-lg object-cover"
+              />
               <span className="font-semibold gradient-text">STORY</span>
             </div>
           </div>
