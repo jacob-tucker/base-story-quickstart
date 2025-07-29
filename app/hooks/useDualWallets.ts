@@ -18,17 +18,32 @@ export function useDualWallets(): DualWalletState & DualWalletActions {
       address: primaryWallet?.address,
       chain: primaryWallet?.chain,
       chainType: typeof primaryWallet?.chain,
-      storyChainId: STORY_CHAIN_ID
+      storyChainId: STORY_CHAIN_ID,
+      primaryWallet: primaryWallet
     });
     
     if (primaryWallet?.address) {
       const walletChainId = Number(primaryWallet.chain);
-      if (walletChainId === STORY_CHAIN_ID) {
-        console.log('Setting Story address:', primaryWallet.address);
-        setStoryAddress(primaryWallet.address);
-      } else {
-        console.log('Wallet connected to wrong chain:', walletChainId, 'expected:', STORY_CHAIN_ID);
-      }
+      console.log('Chain comparison:', {
+        walletChainId,
+        storyChainId: STORY_CHAIN_ID,
+        matches: walletChainId === STORY_CHAIN_ID,
+        chainString: String(primaryWallet.chain),
+        chainNumber: Number(primaryWallet.chain)
+      });
+      
+      // For now, let's set the Story address if we have any Dynamic wallet connected
+      // This will help us debug if the issue is with chain detection or address detection
+      console.log('Setting Story address (debug mode):', primaryWallet.address);
+      setStoryAddress(primaryWallet.address);
+      
+      // TODO: Re-enable chain checking once we confirm address detection works
+      // if (walletChainId === STORY_CHAIN_ID) {
+      //   console.log('Setting Story address:', primaryWallet.address);
+      //   setStoryAddress(primaryWallet.address);
+      // } else {
+      //   console.log('Wallet connected to wrong chain:', walletChainId, 'expected:', STORY_CHAIN_ID);
+      // }
     } else {
       console.log('No primary wallet address, clearing Story address');
       setStoryAddress(undefined);
