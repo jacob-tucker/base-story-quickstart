@@ -20,7 +20,7 @@ export default function ExampleSuccess() {
         <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
           <div className="flex justify-between items-center">
             <span className="text-xs text-[var(--text-secondary)]">
-              Base Payment:
+              Base Payment Tx:
             </span>
             <a
               href="https://basescan.org/tx/0x8532e90ee671268f578202850a1709a8d512f71b1a81bf3eb4929d6a627eb76a"
@@ -35,7 +35,7 @@ export default function ExampleSuccess() {
         <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
           <div className="flex justify-between items-center">
             <span className="text-xs text-[var(--text-secondary)]">
-              Story License:
+              Story License Tx:
             </span>
             <a
               href="https://www.storyscan.io/tx/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda"

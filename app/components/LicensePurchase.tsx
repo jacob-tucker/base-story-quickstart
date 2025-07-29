@@ -293,7 +293,7 @@ export default function LicensePurchase({
             {baseTxHash && (
               <div className="flex justify-between items-center p-3 glass rounded-lg">
                 <span className="text-xs text-[var(--text-secondary)]">
-                  Base Payment:
+                  Base Payment Tx:
                 </span>
                 <a
                   href={`https://basescan.org/tx/${baseTxHash}`}
@@ -308,7 +308,7 @@ export default function LicensePurchase({
             {storyTxHash && (
               <div className="flex justify-between items-center p-3 glass rounded-lg">
                 <span className="text-xs text-[var(--text-secondary)]">
-                  Story License:
+                  Story License Tx:
                 </span>
                 <a
                   href={`https://www.storyscan.io/tx/${storyTxHash}`}

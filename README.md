@@ -96,8 +96,8 @@ npm run build
 
 Here's an example of a successful cross-chain license purchase:
 
-- **Base Payment**: [0x8532e90ee6...627eb76a](https://basescan.org/tx/0x8532e90ee671268f578202850a1709a8d512f71b1a81bf3eb4929d6a627eb76a)
-- **Story License**: [0x5a41060e17...b270fda](https://www.storyscan.io/tx/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda)
+- **Base Payment Tx**: [0x8532e90ee6...627eb76a](https://basescan.org/tx/0x8532e90ee671268f578202850a1709a8d512f71b1a81bf3eb4929d6a627eb76a)
+- **Story License Tx**: [0x5a41060e17...b270fda](https://www.storyscan.io/tx/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda)
 - **License Token**: [#36896](https://explorer.story.foundation/transactions/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda)
 
 ## License Terms
