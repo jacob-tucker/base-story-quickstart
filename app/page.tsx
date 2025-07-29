@@ -106,7 +106,7 @@ export default function App() {
               <p className="text-[var(--text-secondary)]">
                 This demo uses real mainnet transactions because deBridge does
                 not work on testnet. If you try the demo, only use wallets you
-                don't care about.
+                don&apos;t care about.
               </p>
             </div>
           </div>

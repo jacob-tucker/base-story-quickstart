@@ -183,7 +183,7 @@ export default function LicensePurchase({
           className="w-full px-4 py-3 glass rounded-lg border border-[var(--border-primary)] focus:border-[var(--accent-cyan)] focus:outline-none text-[var(--text-primary)] placeholder-[var(--text-muted)] transition-colors"
         />
         <p className="text-xs text-[var(--text-muted)] mt-2">
-          Where you'll receive the commercial license NFT
+          Where you&apos;ll receive the commercial license NFT
         </p>
       </div>
 

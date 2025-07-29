@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 
 interface MusicPlayerProps {
   coverImage: string;
@@ -59,9 +60,11 @@ export default function MusicPlayer({
   return (
     <div className="glass rounded-2xl overflow-hidden glow-border">
       <div className="relative">
-        <img
+        <Image
           src={coverImage}
           alt="Music Cover"
+          width={400}
+          height={256}
           className="w-full h-64 object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
