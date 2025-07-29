@@ -12,8 +12,8 @@ export function Providers(props: { children: ReactNode }) {
       config={{
         appearance: {
           mode: "auto",
-          name: "Story × Base Educational Demo",
-          logo: "/images/logo.png", // You can add a logo later
+          name: "Story × Base Cross-Chain Demo",
+          logo: "/assets/story-logo.jpg",
         },
       }}
     >
