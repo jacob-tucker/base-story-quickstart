@@ -16,7 +16,6 @@ import { RoyaltyPaymentParams, DeBridgeApiResponse } from "./types";
 export const buildRoyaltyPaymentHook = (
   params: RoyaltyPaymentParams
 ): string => {
-  console.log("params", params);
   // Encode the payRoyaltyOnBehalf function call
   const calldata = encodeFunctionData({
     abi: [
@@ -59,9 +58,7 @@ export const buildDeBridgeApiUrl = (
   testRun: boolean
 ): string => {
   const dlnHook = buildRoyaltyPaymentHook(params);
-  console.log("dlnHook", dlnHook);
   const encodedHook = encodeURIComponent(dlnHook);
-  console.log("encodedHook", encodedHook);
   const url =
     `https://dln.debridge.finance/v1.0/dln/order/create-tx?` +
     `srcChainId=${base.id}` +
@@ -104,7 +101,6 @@ export const getDeBridgeTransactionData = async (
     }
 
     const data = (await response.json()) as DeBridgeApiResponse;
-    console.log("deBridge API Response:", data);
 
     // Validate the response
     if (!data.tx || !data.estimation || !data.orderId) {
@@ -208,7 +204,6 @@ export const executeRoyaltyPayment = async (
 
     const destinationTxHash = await getDestinationTxHash(txHash);
 
-    console.log("Cross-chain royalty payment transaction sent:", txHash);
     return { srcTxHash: txHash, dstTxHash: destinationTxHash };
   } catch (error) {
     console.error("Error executing royalty payment:", error);
