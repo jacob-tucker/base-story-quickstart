@@ -178,22 +178,27 @@ export default function App() {
                         License Minted
                       </p>
                       <p className="text-xs text-[var(--text-muted)]">
-                        Receive NFT on Story
+                        Receive commercial license on Story
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Example Success */}
+              {/* Real Example Success */}
               <div className="glass rounded-2xl p-6 glow-border">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-8 h-8 bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold text-sm">✓</span>
                   </div>
-                  <h3 className="text-lg font-semibold gradient-text">
-                    Example Success
-                  </h3>
+                  <div>
+                    <h3 className="text-lg font-semibold gradient-text">
+                      Real Transaction Example
+                    </h3>
+                    <p className="text-xs text-[var(--text-muted)]">
+                      Actual cross-chain license purchase that happened
+                    </p>
+                  </div>
                 </div>
                 <div className="space-y-3">
                   <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
