@@ -9,37 +9,8 @@ import {
   WalletClient,
 } from "viem";
 import { base, story } from "viem/chains";
-
-// Story constants
-export const DEBRIDGE_MULTICALL = "0x6429a616f76a8958e918145d64bf7681c3936d6a"; // Story license module
-
-// Types for deBridge integration
-export interface DeBridgeApiResponse {
-  estimation: {
-    srcChainTokenIn: {
-      amount: string;
-      approximateOperatingExpense: string;
-    };
-    dstChainTokenOut: {
-      amount: string;
-      maxTheoreticalAmount: string;
-    };
-  };
-  tx: {
-    to: string;
-    data: string;
-    value: string;
-  };
-  orderId: string;
-}
-
-export interface RoyaltyPaymentParams {
-  ipAssetId: string;
-  licenseTermsId: string;
-  paymentAmount: string; // Amount in WIP tokens (wei)
-  receiverAddress: string;
-  senderAddress: string;
-}
+import { DEBRIDGE_MULTICALL } from "./constants";
+import { RoyaltyPaymentParams, DeBridgeApiResponse } from "./types";
 
 // Build the dlnHook for Story royalty payment
 export const buildRoyaltyPaymentHook = (

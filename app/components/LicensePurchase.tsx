@@ -11,9 +11,9 @@ import {
   executeRoyaltyPayment,
   getDeBridgeTransactionData,
   getLicenseTokenId,
-  type RoyaltyPaymentParams,
 } from "../lib/debridge";
 import { parseEther, formatEther } from "viem";
+import { RoyaltyPaymentParams } from "../lib/types";
 
 interface LicensePurchaseProps {
   storyIpAssetId: string;
@@ -158,15 +158,21 @@ export default function LicensePurchase({
     <div className="glass rounded-2xl p-6 glow-border">
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-10 h-10 bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] rounded-lg flex items-center justify-center">
-          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          <svg
+            className="w-5 h-5 text-white"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
           </svg>
         </div>
         <div>
           <h3 className="text-xl font-semibold text-[var(--text-primary)]">
             License Purchase
           </h3>
-          <p className="text-[var(--text-secondary)]">Cross-chain payment via deBridge</p>
+          <p className="text-[var(--text-secondary)]">
+            Cross-chain payment via deBridge
+          </p>
         </div>
       </div>
 
@@ -193,15 +199,27 @@ export default function LicensePurchase({
           <span className="text-[var(--text-secondary)]">Estimated Cost:</span>
           <span className="font-semibold">
             {isLoadingCost ? (
-              <span className="animate-pulse text-[var(--accent-cyan)]">Loading...</span>
+              <span className="animate-pulse text-[var(--accent-cyan)]">
+                Loading...
+              </span>
             ) : ethCost === "ERROR" ? (
-              <span className="text-[var(--accent-pink)]">Error loading price</span>
+              <span className="text-[var(--accent-pink)]">
+                Error loading price
+              </span>
             ) : ethCost ? (
-              <span className={hasInsufficientBalance ? "text-[var(--accent-pink)]" : "text-[var(--accent-cyan)]"}>
+              <span
+                className={
+                  hasInsufficientBalance
+                    ? "text-[var(--accent-pink)]"
+                    : "text-[var(--accent-cyan)]"
+                }
+              >
                 {ethCost} ETH
               </span>
             ) : (
-              <span className="text-[var(--text-muted)]">{commercialLicensePriceWip} WIP</span>
+              <span className="text-[var(--text-muted)]">
+                {commercialLicensePriceWip} WIP
+              </span>
             )}
           </span>
         </div>
@@ -219,7 +237,9 @@ export default function LicensePurchase({
       {hasInsufficientBalance && (
         <div className="mb-6 p-4 glass rounded-xl border border-[var(--accent-pink)]/50 bg-[var(--accent-pink)]/10">
           <p className="text-sm text-[var(--accent-pink)]">
-Insufficient balance. Need {ethCost} ETH, have {balance ? parseFloat(formatEther(balance.value)).toFixed(6) : "0"} ETH
+            Insufficient balance. Need {ethCost} ETH, have{" "}
+            {balance ? parseFloat(formatEther(balance.value)).toFixed(6) : "0"}{" "}
+            ETH
           </p>
         </div>
       )}
@@ -241,11 +261,15 @@ Insufficient balance. Need {ethCost} ETH, have {balance ? parseFloat(formatEther
         {licenseStatus === "error" && "Try Again"}
         {licenseStatus === "idle" && "Buy License"}
       </button>
-      
+
       {!storyAddress && !hasInsufficientBalance && licenseStatus === "idle" && (
         <div className="flex items-center justify-center space-x-2 mb-4">
-          <svg className="w-4 h-4 text-[var(--accent-pink)]" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+          <svg
+            className="w-4 h-4 text-[var(--accent-pink)]"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
           </svg>
           <p className="text-xs text-[var(--accent-pink)] font-medium">
             Please enter your Story address to continue
@@ -268,12 +292,15 @@ Insufficient balance. Need {ethCost} ETH, have {balance ? parseFloat(formatEther
       {licenseStatus === "success" && (
         <div className="p-4 glass rounded-xl border border-[var(--accent-cyan)]/50 bg-[var(--accent-cyan)]/10">
           <p className="text-sm text-[var(--accent-cyan)] mb-4 font-medium">
-License purchased successfully! You can now use this music commercially.
+            License purchased successfully! You can now use this music
+            commercially.
           </p>
           <div className="space-y-3">
             {baseTxHash && (
               <div className="flex justify-between items-center p-3 glass rounded-lg">
-                <span className="text-xs text-[var(--text-secondary)]">Base Payment:</span>
+                <span className="text-xs text-[var(--text-secondary)]">
+                  Base Payment:
+                </span>
                 <a
                   href={`https://basescan.org/tx/${baseTxHash}`}
                   target="_blank"
@@ -286,7 +313,9 @@ License purchased successfully! You can now use this music commercially.
             )}
             {storyTxHash && (
               <div className="flex justify-between items-center p-3 glass rounded-lg">
-                <span className="text-xs text-[var(--text-secondary)]">Story License:</span>
+                <span className="text-xs text-[var(--text-secondary)]">
+                  Story License:
+                </span>
                 <a
                   href={`https://www.storyscan.io/tx/${storyTxHash}`}
                   target="_blank"
@@ -299,7 +328,9 @@ License purchased successfully! You can now use this music commercially.
             )}
             {licenseTokenId && (
               <div className="flex justify-between items-center p-3 glass rounded-lg">
-                <span className="text-xs text-[var(--text-secondary)]">License Token:</span>
+                <span className="text-xs text-[var(--text-secondary)]">
+                  License Token:
+                </span>
                 <a
                   href={`https://explorer.story.foundation/transactions/${storyTxHash}`}
                   target="_blank"
@@ -317,7 +348,7 @@ License purchased successfully! You can now use this music commercially.
       {licenseStatus === "error" && (
         <div className="p-4 glass rounded-xl border border-[var(--accent-pink)]/50 bg-[var(--accent-pink)]/10">
           <p className="text-sm text-[var(--accent-pink)]">
-Payment failed. Please try again.
+            Payment failed. Please try again.
           </p>
         </div>
       )}

@@ -17,11 +17,14 @@ import {
 } from "@coinbase/onchainkit/identity";
 import MusicPlayer from "./components/MusicPlayer";
 import LicensePurchase from "./components/LicensePurchase";
+import HowItWorks from "./components/HowItWorks";
+import ExampleSuccess from "./components/ExampleSuccess";
 import BaseImage from "./svg/BaseImage";
-
-const STORY_IP_ASSET_ID = "0xcb6B9CCae4108A103097B30cFc25e1E257D4b5Fe";
-const COMMERCIAL_LICENSE_PRICE_WIP = "0.00001";
-const IP_ASSET_LICENSE_TERMS_ID = "27910";
+import {
+  COMMERCIAL_LICENSE_PRICE_WIP,
+  IP_ASSET_LICENSE_TERMS_ID,
+  STORY_IP_ASSET_ID,
+} from "./lib/constants";
 
 export default function App() {
   const { isConnected } = useAccount();
@@ -129,128 +132,8 @@ export default function App() {
           <div className="space-y-8">
             {/* How It Works & Example Success - Show when connected */}
             <div className="grid lg:grid-cols-2 gap-6">
-              {/* How It Works */}
-              <div className="glass rounded-2xl p-6 glow-border">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-8 h-8 bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">?</span>
-                  </div>
-                  <h3 className="text-lg font-semibold gradient-text">
-                    How It Works
-                  </h3>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-6 h-6 bg-[var(--accent-cyan)]/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-[var(--accent-cyan)] font-bold text-xs">
-                        1
-                      </span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-[var(--text-primary)]">
-                        Connect Base Wallet
-                      </p>
-                      <p className="text-xs text-[var(--text-muted)]">
-                        Pay with ETH on Base
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-6 h-6 bg-[var(--accent-purple)]/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-[var(--accent-purple)] font-bold text-xs">
-                        2
-                      </span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-[var(--text-primary)]">
-                        Cross-Chain Bridge
-                      </p>
-                      <p className="text-xs text-[var(--text-muted)]">
-                        deBridge converts ETH → WIP
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-6 h-6 bg-[var(--accent-pink)]/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-[var(--accent-pink)] font-bold text-xs">
-                        3
-                      </span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-[var(--text-primary)]">
-                        License Minted
-                      </p>
-                      <p className="text-xs text-[var(--text-muted)]">
-                        Receive commercial license on Story
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Real Example Success */}
-              <div className="glass rounded-2xl p-6 glow-border">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-8 h-8 bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">✓</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold gradient-text">
-                      Real Transaction Example
-                    </h3>
-                    <p className="text-xs text-[var(--text-muted)]">
-                      Actual cross-chain license purchase that happened
-                    </p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-[var(--text-secondary)]">
-                        Base Payment:
-                      </span>
-                      <a
-                        href="https://basescan.org/tx/0x8532e90ee671268f578202850a1709a8d512f71b1a81bf3eb4929d6a627eb76a"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
-                      >
-                        0x8532e90ee6...627eb76a ↗
-                      </a>
-                    </div>
-                  </div>
-                  <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-[var(--text-secondary)]">
-                        Story License:
-                      </span>
-                      <a
-                        href="https://www.storyscan.io/tx/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
-                      >
-                        0x5a41060e17...b270fda ↗
-                      </a>
-                    </div>
-                  </div>
-                  <div className="p-3 glass rounded-lg border border-[var(--border-primary)]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-[var(--text-secondary)]">
-                        License Token:
-                      </span>
-                      <a
-                        href="https://explorer.story.foundation/transactions/0x5a41060e17791be6506c62e782542127a10c7dd298fa894729bd0ba61b270fda"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] font-mono hover:underline transition-colors"
-                      >
-                        #36896 ↗
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <HowItWorks />
+              <ExampleSuccess />
             </div>
 
             {/* Main Interface */}
