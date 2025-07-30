@@ -27,7 +27,6 @@ export function useDualWallets(): DualWalletState & DualWalletActions {
         setStoryAddress(primaryWallet.address);
       } else {
         console.log('Wallet connected to wrong chain:', walletChainId, 'expected:', STORY_CHAIN_ID);
-        // For now, still set the address even if wrong chain to enable testing
         setStoryAddress(primaryWallet.address);
       }
     } else {
@@ -37,7 +36,6 @@ export function useDualWallets(): DualWalletState & DualWalletActions {
   }, [primaryWallet?.address, primaryWallet?.chain]);
 
   // Base wallet - OnchainKit will manage this independently
-  // We'll detect Base connection state through OnchainKit's built-in state
   const baseWallet = {
     address: undefined, // OnchainKit manages this
     isConnected: false, // OnchainKit manages this
