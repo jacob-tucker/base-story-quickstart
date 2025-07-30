@@ -25,3 +25,24 @@ export interface RoyaltyPaymentParams {
   receiverAddress: string;
   senderAddress: string;
 }
+
+// Types for dual wallet management
+export interface DualWalletState {
+  baseWallet: {
+    address: string | undefined;
+    isConnected: boolean;
+    chainId: number | undefined;
+  };
+  storyWallet: {
+    address: string | undefined;
+    isConnected: boolean;
+    chainId: number | undefined;
+  };
+}
+
+export interface DualWalletActions {
+  connectStoryWallet: () => void;
+  disconnectStoryWallet: () => void;
+  getStoryAddress: () => string | undefined;
+  getBaseAddress: () => string | undefined;
+}
